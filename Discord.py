@@ -3,7 +3,7 @@ from discord.ext import commands
 from Youtube import reproducir, mover, eliminar, limpiar
 from Spotify import obtener_informacion_spotify
 from Controls import lista, pausar, reanudar, saltar
-from collections import deque
+import yt_dlp as youtube_dl
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -21,9 +21,6 @@ except Exception as e:
 async def on_ready():
     print(f"✅ Bot listo y conectado como {bot.user}")
     await bot.change_presence(activity=discord.Game(name="¡Reproduciendo música!"))
-
-
-playlist = deque()
 
 
 @bot.command()

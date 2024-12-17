@@ -2,6 +2,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from Youtube import playlist
 from Youtube import reproducir_siguiente
+import asyncio
 
 # Configuración de Spotify
 sp = spotipy.Spotify(
