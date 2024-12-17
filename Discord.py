@@ -11,7 +11,7 @@ bot = commands.Bot(command_prefix="ms:", intents=intents)
 
 # -------------------------- EJECUCIÓN DEL BOT --------------------------
 try:
-    bot.run("MTMxMzk4NTUxMjE4MDAyNzQ3Mw.GB9Ipp.M4vKPNI-09kO_R70SAfMYDzs50Kp9V5hA_6Ncc")
+    bot.run("DISCORD TOKEN")
 except Exception as e:
     print(f"❌ Error al iniciar el bot: {e}")
 
