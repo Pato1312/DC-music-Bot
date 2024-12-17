@@ -14,7 +14,7 @@ sp = spotipy.Spotify(
 )
 
 
-def obtener_informacion_spotify(url):
+def obtener_informacion_spotify(url: str):
     if "track" in url:
         track = sp.track(url)
         titulo = track["name"]

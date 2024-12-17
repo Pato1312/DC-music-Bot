@@ -72,8 +72,8 @@ async def video(ctx):
     await ctx.send("https://www.youtube.com/watch?v=9-80NMLhmxs")
 
 
-@bot.command
-async def youtube(ctx, url):
+@bot.command()
+async def youtube(ctx, url: str):
 
     try:
         # Verificamos que el usuario este conectado a un canal de voz
@@ -84,7 +84,7 @@ async def youtube(ctx, url):
             return
         else:
             # Si esta conectado el usuario, llama a la función en youtube.py
-            await reproducir(ctx, url)
+            await reproducir(ctx, bot, url)
     # Errores al reproducir el video
 
     except youtube_dl.utils.DownloadError:
@@ -101,8 +101,8 @@ async def youtube(ctx, url):
 
 
 # -------------------------- SPOTIFY -------------------------- #
-@bot.command
-async def spotify(ctx, url):
+@bot.command()
+async def spotify(ctx, url: str):
 
     try:
         canciones = obtener_informacion_spotify(url)

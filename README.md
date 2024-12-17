@@ -2,7 +2,7 @@
 
 Este es un bot de música para Discord, desarrollado por **Patricio Riquelme** y **Pablo Silva**. El bot permite reproducir canciones desde **YouTube** y **Spotify** en nuestro servidor de Discord. Además, permite gestionar la lista de reproducción y controlar la reproducción de las canciones.
 
-Todo comando se inicia con el prefijo "**ms:**"
+Todo comando se inicia con el prefijo ** "ms:" **
 
 ---
 
@@ -13,7 +13,6 @@ A continuación, te mostramos todos los comandos disponibles para interactuar co
 ### 🎥 Comandos de YouTube
 
 - `ms:youtube`: Reproduce una canción desde YouTube.
-- `ms:reproducir`: Reproduce o añade una canción a la lista de reproducción.
 - `ms:saltar`: Salta la canción actual.
 - `ms:detener`: Detiene la reproducción de la canción.
 - `ms:pausar`: Pausa la canción actual.
@@ -38,6 +37,6 @@ A continuación, te mostramos todos los comandos disponibles para interactuar co
 
 - El bot convierte enlaces de Spotify a YouTube para evitar problemas con los derechos de autor, buscando el nombre de la canción y el artista en YouTube.
 - Asegúrate de tener permisos adecuados para añadir y controlar el bot en tu servidor de Discord.
+- El bot requiere la creación de un archivo .env para funcionar
 
 ¡Disfruta de la música en tu servidor de Discord! 🎶
-
