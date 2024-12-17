@@ -29,6 +29,28 @@ async def reproducir(ctx, bot, url):
         await reproducir_siguiente(ctx, voz)
 
 
+async def buscar_youtube(query):
+    global playlist
+    """
+    Busca en YouTube y devuelve el título y URL del primer resultado.
+    """
+    opciones = {
+        "quiet": True,
+        "format": "bestaudio/best",
+        "noplaylist": True,
+    }
+    with youtube_dl.YoutubeDL(opciones) as ydl:
+        try:
+            resultados = ydl.extract_info(f"ytsearch:{query}", download=False)[
+                "entries"
+            ]
+            if resultados:
+                return resultados[0]["title"], resultados[0]["url"]
+        except Exception as e:
+            print(f"Error buscando en YouTube: {e}")
+            return None, None
+
+
 async def reproducir_siguiente(ctx, voz):
     global playlist
     if playlist:
@@ -52,33 +74,6 @@ async def reproducir_siguiente(ctx, voz):
         voz.source.volume = 0.10
 
         await ctx.send(f"🎶 Reproduciendo **{titulo}**.")
+        # await ctx.send(url)
     else:
         await ctx.send("La lista de reproducción ha terminado.")
-
-
-async def mover(ctx, posicion_actual: int, nueva_posicion: int):
-    global playlist
-    if 1 <= posicion_actual <= len(playlist) and 1 <= nueva_posicion <= len(playlist):
-        cancion = playlist[posicion_actual - 1]
-        playlist.remove(cancion)
-        playlist.insert(nueva_posicion - 1, cancion)
-        await ctx.send(
-            f"🎵 Canción **{cancion[0]}** movida a la posición {nueva_posicion}."
-        )
-    else:
-        await ctx.send("⚠️ Posiciones inválidas.")
-
-
-async def eliminar(ctx, posicion: int):
-    global playlist
-    if 1 <= posicion <= len(playlist):
-        cancion = playlist.pop(posicion - 1)
-        await ctx.send(f"🗑️ Canción **{cancion[0]}** eliminada de la lista.")
-    else:
-        await ctx.send("⚠️ Posición inválida.")
-
-
-async def limpiar(ctx):
-    global playlist
-    playlist.clear()
-    await ctx.send("🗑️ Lista de reproducción vaciada.")

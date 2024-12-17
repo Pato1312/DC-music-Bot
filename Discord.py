@@ -1,9 +1,9 @@
 import discord
 from discord.ext import commands
 from discord.utils import get
-from Youtube import reproducir, mover, eliminar, limpiar
+from Youtube import reproducir, buscar_youtube
 from Spotify import obtener_informacion_spotify
-from Controls import lista, pausar, reanudar, saltar
+import Controls
 import yt_dlp as youtube_dl
 from collections import deque
 import credenciales
@@ -103,19 +103,29 @@ async def youtube(ctx, url: str):
 # -------------------------- SPOTIFY -------------------------- #
 @bot.command()
 async def spotify(ctx, url: str):
-
     try:
+        # Obtiene información de canciones desde el enlace de Spotify
         canciones = obtener_informacion_spotify(url)
 
+        # Verifica si el usuario está conectado a un canal de voz
         if not ctx.author.voice or not ctx.author.voice.channel:
             await ctx.send(
                 "❌ Debes estar conectado a un canal de voz para usar este comando."
             )
             return
-        elif canciones:
+
+        if canciones:
+            # Procesa cada canción obtenida
             for cancion in canciones:
+                print(cancion)
                 await ctx.send(f"🔍 Buscando **{cancion}** en YouTube...")
-                # Discord no pemite reproducir desde spotify por lo que buscamos en youtube
+                titulo, enlace = await buscar_youtube(cancion)  # Corrección aquí
+                if enlace:
+                    await reproducir(ctx, bot, enlace)
+                else:
+                    await ctx.send(
+                        f"⚠️ No se encontró un resultado válido para **{cancion}**."
+                    )
         else:
             await ctx.send("⚠️ No se encontró información válida en Spotify.")
 
@@ -136,7 +146,7 @@ async def lista(ctx):
             )
             return
         else:
-            await lista(ctx)
+            await Controls.lista(ctx)
     except Exception as e:
         await ctx.send("❌ Error al mostrar la lista de reproducción.")
         print(f"Error en lista command: {e}")
@@ -151,7 +161,7 @@ async def limpiar(ctx):
             )
             return
         else:
-            await limpiar(ctx)
+            await Controls.limpiar(ctx)
     except Exception as e:
         await ctx.send("❌ Error al limpiar la lista de reproducción.")
         print(f"Error en limpiar command: {e}")
@@ -166,7 +176,7 @@ async def eliminar(ctx, posicion: int):
             )
             return
         else:
-            await eliminar(ctx, posicion)
+            await Controls.eliminar(ctx, posicion)
     except ValueError:
         await ctx.send("⚠️ La posición debe ser un número válido.")
     except Exception as e:
@@ -183,7 +193,7 @@ async def mover(ctx, posicion_actual: int, nueva_posicion: int):
             )
             return
         else:
-            await mover(ctx, posicion_actual, nueva_posicion)
+            await Controls.mover(ctx, posicion_actual, nueva_posicion)
     except ValueError:
         await ctx.send("⚠️ Las posiciones deben ser números válidos.")
     except Exception as e:
@@ -202,7 +212,7 @@ async def pausar(ctx):
             )
             return
         else:
-            await pausar(ctx, voz)
+            await Controls.pausar(ctx, voz)
     except Exception as e:
         await ctx.send("❌ Error al pausar la reproducción.")
         print(f"Error en pausar command: {e}")
@@ -218,7 +228,7 @@ async def reanudar(ctx):
             )
             return
         else:
-            await reanudar(ctx, voz)
+            await Controls.reanudar(ctx, voz)
     except Exception as e:
         await ctx.send("❌ Error al reanudar la reproducción.")
         print(f"Error en reanudar command: {e}")
@@ -234,7 +244,7 @@ async def saltar(ctx):
             )
             return
         else:
-            await saltar(ctx, voz)
+            await Controls.saltar(ctx, voz)
     except Exception as e:
         await ctx.send("❌ Error al saltar la canción.")
         print(f"Error en saltar command: {e}")
