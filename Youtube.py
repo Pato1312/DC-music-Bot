@@ -7,6 +7,7 @@ playlist = deque()  # Cola global para la lista de reproducción
 
 
 async def reproducir(ctx, bot, url):
+    global playlist
     canal = ctx.message.author.voice.channel
     if not canal:
         await ctx.send("No estás conectado a un canal de voz.")
@@ -29,6 +30,7 @@ async def reproducir(ctx, bot, url):
 
 
 async def reproducir_siguiente(ctx, voz):
+    global playlist
     if playlist:
         titulo, url = playlist.popleft()
 
@@ -55,6 +57,7 @@ async def reproducir_siguiente(ctx, voz):
 
 
 async def mover(ctx, posicion_actual: int, nueva_posicion: int):
+    global playlist
     if 1 <= posicion_actual <= len(playlist) and 1 <= nueva_posicion <= len(playlist):
         cancion = playlist[posicion_actual - 1]
         playlist.remove(cancion)
@@ -67,6 +70,7 @@ async def mover(ctx, posicion_actual: int, nueva_posicion: int):
 
 
 async def eliminar(ctx, posicion: int):
+    global playlist
     if 1 <= posicion <= len(playlist):
         cancion = playlist.pop(posicion - 1)
         await ctx.send(f"🗑️ Canción **{cancion[0]}** eliminada de la lista.")
@@ -75,5 +79,6 @@ async def eliminar(ctx, posicion: int):
 
 
 async def limpiar(ctx):
+    global playlist
     playlist.clear()
     await ctx.send("🗑️ Lista de reproducción vaciada.")

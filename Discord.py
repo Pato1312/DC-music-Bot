@@ -67,6 +67,11 @@ async def desconectar(ctx):
 # -------------------------- YOUTUBE -------------------------- #
 
 
+@bot.command()
+async def video(ctx):
+    await ctx.send("https://www.youtube.com/watch?v=9-80NMLhmxs")
+
+
 @bot.command
 async def youtube(ctx, url):
 
