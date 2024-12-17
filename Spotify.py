@@ -6,8 +6,8 @@ from Youtube import reproducir_siguiente
 # Configuración de Spotify
 sp = spotipy.Spotify(
     auth_manager=SpotifyClientCredentials(
-        client_id="YOUR_CLIENT_ID",
-        client_secret="YOUR_CLIENT_SECRET",
+        client_id="3350b4e26b204568bfca804e999f8e68",
+        client_secret="b43c37a4f138444bb81786fe6926db92",
     )
 )
 

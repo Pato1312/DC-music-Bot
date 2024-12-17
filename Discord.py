@@ -3,40 +3,47 @@ from discord.ext import commands
 from Youtube import reproducir, mover, eliminar, limpiar
 from Spotify import obtener_informacion_spotify
 from Controls import lista, pausar, reanudar, saltar
+from collections import deque
 
 intents = discord.Intents.default()
 intents.message_content = True
-bot = commands.Bot(command_prefix="mus!", intents=intents)
+bot = commands.Bot(command_prefix="ms:", intents=intents)
 
 # -------------------------- EJECUCIÓN DEL BOT --------------------------
 try:
-    bot.run("YOUR_DISCORD_TOKEN")
+    bot.run("MTMxMzk4NTUxMjE4MDAyNzQ3Mw.GB9Ipp.M4vKPNI-09kO_R70SAfMYDzs50Kp9V5hA_6Ncc")
 except Exception as e:
     print(f"❌ Error al iniciar el bot: {e}")
 
 
 # -------------------------- LLAMAR AL BOT AL SERVIDOR ------------------------- #
 @bot.event
-async def on_ready(ctx):
+async def on_ready():
+    print(f"✅ Bot listo y conectado como {bot.user}")
+    await bot.change_presence(activity=discord.Game(name="¡Reproduciendo música!"))
 
-    try:
-        # Verificamos que el usuario este conectado a un canal de voz
-        if not ctx.author.voice or not ctx.author.voice.channel:
-            await ctx.send(
-                "❌ Debes estar conectado a un canal de voz para usar este comando."
-            )
-            return
-        else:
-            print(f"BOT a entrado com {bot.user}")
-            await bot.change_presence(
-                activity=discord.Activity(
-                    type=discord.ActivityType.listening,
-                    name="🎧 Listo para escuchar Spotify y YouTube",
-                )
-            )
 
-    except Exception as e:
-        print(f"Error al cargar el bot, debido a {e} 👻")
+playlist = deque()
+
+
+@bot.command()
+async def conectar(ctx):
+    global playlist
+    canal = ctx.message.author.voice.channel
+
+    if not canal:
+        await ctx.send("❌ No estás conectado a un canal de voz.")
+        return
+
+    voz = discord.utils.get(bot.voice_clients, guild=ctx.guild)
+
+    if voz and voz.is_connected():
+        await voz.move_to(canal)
+    else:
+        voz = await canal.connect()
+
+    playlist.clear()
+    await ctx.send("🎶 Conectado al canal y lista de reproducción inicializada.")
 
 
 # -------------------------- YOUTUBE -------------------------- #
@@ -215,7 +222,7 @@ async def saltar(ctx):
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
         await ctx.send(
-            "⚠️ Comando no encontrado. Usa `/ms:` para ver los comandos disponibles."
+            "⚠️ Comando no encontrado. Usa `ms:` para ver los comandos disponibles."
         )
     elif isinstance(error, commands.MissingRequiredArgument):
         await ctx.send("⚠️ Faltan argumentos en el comando. Revisa la sintaxis.")
@@ -244,12 +251,12 @@ async def ayuda(ctx):
     embed.add_field(
         name="🎥 **Comandos de YouTube**",
         value=(
-            "`/ms:youtube <url>` - Reproduce una canción desde YouTube.\n"
-            "`/ms:reproducir <url>` - Reproduce o añade una canción a la lista.\n"
-            "`/ms:saltar` - Salta la canción actual.\n"
-            "`/ms:detener` - Detiene la reproducción.\n"
-            "`/ms:pausar` - Pausa la canción actual.\n"
-            "`/ms:reanudar` - Reanuda la canción pausada."
+            "`ms:youtube <url>` - Reproduce una canción desde YouTube.\n"
+            "`ms:reproducir <url>` - Reproduce o añade una canción a la lista.\n"
+            "`ms:saltar` - Salta la canción actual.\n"
+            "`ms:detener` - Detiene la reproducción.\n"
+            "`ms:pausar` - Pausa la canción actual.\n"
+            "`ms:reanudar` - Reanuda la canción pausada."
         ),
         inline=False,
     )
@@ -258,7 +265,7 @@ async def ayuda(ctx):
     embed.add_field(
         name="🎵 **Comandos de Spotify**",
         value=(
-            "`/ms:spotify <url>` - Reproduce una canción o playlist desde Spotify.\n"
+            "`ms:spotify <url>` - Reproduce una canción o playlist desde Spotify.\n"
             "⚠️ *Nota*: Convierte canciones de Spotify a enlaces de YouTube automáticamente."
         ),
         inline=False,
@@ -268,17 +275,17 @@ async def ayuda(ctx):
     embed.add_field(
         name="🎮 **Controles del Bot**",
         value=(
-            "`/ms:conectar` - Conecta el bot al canal de voz.\n"
-            "`/ms:desconectar` - Desconecta el bot del canal de voz.\n"
-            "`/ms:lista` - Muestra la lista de reproducción actual.\n"
-            "`/ms:limpiar` - Elimina todas las canciones de la lista.\n"
-            "`/ms:video` - Muestra un video de ejemplo (¡broma!)."
+            "`ms:conectar` - Conecta el bot al canal de voz.\n"
+            "`ms:desconectar` - Desconecta el bot del canal de voz.\n"
+            "`ms:lista` - Muestra la lista de reproducción actual.\n"
+            "`ms:limpiar` - Elimina todas las canciones de la lista.\n"
+            "`ms:video` - Muestra un video de ejemplo (¡broma!)."
         ),
         inline=False,
     )
 
     # Mensaje final
     embed.set_footer(
-        text="Usa los comandos con el prefijo '/ms:' para interactuar conmigo 🎶"
+        text="Usa los comandos con el prefijo 'ms:' para interactuar conmigo 🎶"
     )
     await ctx.send(embed=embed)
