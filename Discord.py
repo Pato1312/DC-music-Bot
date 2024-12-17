@@ -1,10 +1,12 @@
 import discord
 from discord.ext import commands
-
+from Youtube import reproducir, mover, eliminar, limpiar
+from Spotify import obtener_informacion_spotify
+from Controls import lista, pausar, reanudar, saltar
 
 intents = discord.Intents.default()
 intents.message_content = True
-bot = commands.Bot(command_prefix="/ms:", intents=intents)
+bot = commands.Bot(command_prefix="mus!", intents=intents)
 
 # -------------------------- EJECUCIÓN DEL BOT --------------------------
 try:
@@ -70,7 +72,7 @@ async def youtube(ctx, url: str):
 
 # -------------------------- SPOTIFY -------------------------- #
 @bot.command
-async def spotify(ctx, url: url):
+async def spotify(ctx, url: str):
 
     try:
         canciones = obtener_informacion_spotify(url)
