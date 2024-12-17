@@ -1,38 +1,42 @@
 import discord
 from discord.ext import commands
+from discord.utils import get
 from Youtube import reproducir, mover, eliminar, limpiar
 from Spotify import obtener_informacion_spotify
 from Controls import lista, pausar, reanudar, saltar
 import yt_dlp as youtube_dl
+from collections import deque
+
 
 intents = discord.Intents.default()
 intents.message_content = True
-bot = commands.Bot(command_prefix="ms:", intents=intents)
 
+
+bot = commands.Bot(command_prefix='ms:', intents=intents)
+playlist = deque()
 # -------------------------- EJECUCIÓN DEL BOT --------------------------
-try:
-    bot.run("DISCORD TOKEN")
-except Exception as e:
-    print(f"❌ Error al iniciar el bot: {e}")
 
 
 # -------------------------- LLAMAR AL BOT AL SERVIDOR ------------------------- #
 @bot.event
 async def on_ready():
     print(f"✅ Bot listo y conectado como {bot.user}")
-    await bot.change_presence(activity=discord.Game(name="¡Reproduciendo música!"))
+    for command in bot.commands:
+        print(f'- {command.name}')
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game(name="¡Reproduciendo música!"))
 
 
 @bot.command()
 async def conectar(ctx):
     global playlist
+
     canal = ctx.message.author.voice.channel
 
     if not canal:
         await ctx.send("❌ No estás conectado a un canal de voz.")
         return
 
-    voz = discord.utils.get(bot.voice_clients, guild=ctx.guild)
+    voz = get(bot.voice_clients, guild=ctx.guild)
 
     if voz and voz.is_connected():
         await voz.move_to(canal)
@@ -47,7 +51,7 @@ async def conectar(ctx):
 
 
 @bot.command
-async def youtube(ctx, url: str):
+async def youtube(ctx, url):
 
     try:
         # Verificamos que el usuario este conectado a un canal de voz
@@ -76,7 +80,7 @@ async def youtube(ctx, url: str):
 
 # -------------------------- SPOTIFY -------------------------- #
 @bot.command
-async def spotify(ctx, url: str):
+async def spotify(ctx, url):
 
     try:
         canciones = obtener_informacion_spotify(url)
@@ -286,3 +290,9 @@ async def ayuda(ctx):
         text="Usa los comandos con el prefijo 'ms:' para interactuar conmigo 🎶"
     )
     await ctx.send(embed=embed)
+
+try:
+    bot.run("")
+except Exception as e:
+    print(f"❌ Error al iniciar el bot: {e}")
+
