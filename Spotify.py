@@ -3,12 +3,13 @@ from spotipy.oauth2 import SpotifyClientCredentials
 from Youtube import playlist
 from Youtube import reproducir_siguiente
 import asyncio
+import credenciales
 
 # Configuración de Spotify
 sp = spotipy.Spotify(
     auth_manager=SpotifyClientCredentials(
-        client_id="3350b4e26b204568bfca804e999f8e68",
-        client_secret="b43c37a4f138444bb81786fe6926db92",
+        client_id=credenciales.SPOTIFY_CLIENT_ID,  # Usar la variable cargada
+        client_secret=credenciales.SPOTIFY_CLIENT_SECRET,  # Usar la variable cargada
     )
 )
 

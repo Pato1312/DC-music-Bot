@@ -6,15 +6,15 @@ from Spotify import obtener_informacion_spotify
 from Controls import lista, pausar, reanudar, saltar
 import yt_dlp as youtube_dl
 from collections import deque
+import credenciales
 
 
 intents = discord.Intents.default()
 intents.message_content = True
 
 
-bot = commands.Bot(command_prefix='ms:', intents=intents)
+bot = commands.Bot(command_prefix="ms:", intents=intents)
 playlist = deque()
-# -------------------------- EJECUCIÓN DEL BOT --------------------------
 
 
 # -------------------------- LLAMAR AL BOT AL SERVIDOR ------------------------- #
@@ -22,8 +22,11 @@ playlist = deque()
 async def on_ready():
     print(f"✅ Bot listo y conectado como {bot.user}")
     for command in bot.commands:
-        print(f'- {command.name}')
-    await bot.change_presence(status=discord.Status.online, activity=discord.Game(name="¡Reproduciendo música!"))
+        print(f"- {command.name}")
+    await bot.change_presence(
+        status=discord.Status.online,
+        activity=discord.Game(name="¡Reproduciendo música!"),
+    )
 
 
 @bot.command()
@@ -45,6 +48,20 @@ async def conectar(ctx):
 
     playlist.clear()
     await ctx.send("🎶 Conectado al canal y lista de reproducción inicializada.")
+
+
+@bot.command()
+async def desconectar(ctx):
+    """
+    Desconecta al bot del canal de voz en el que está.
+    """
+    voz = discord.utils.get(bot.voice_clients, guild=ctx.guild)
+
+    if voz and voz.is_connected():
+        await voz.disconnect()  # Desconecta al bot del canal de voz
+        await ctx.send("🎶 El bot se ha desconectado del canal de voz.")
+    else:
+        await ctx.send("⚠️ El bot no está conectado a un canal de voz.")
 
 
 # -------------------------- YOUTUBE -------------------------- #
@@ -291,8 +308,9 @@ async def ayuda(ctx):
     )
     await ctx.send(embed=embed)
 
+
+# -------------------------- EJECUCIÓN DEL BOT --------------------------
 try:
-    bot.run("")
+    bot.run(credenciales.DISCORD_BOT_TOKEN)
 except Exception as e:
     print(f"❌ Error al iniciar el bot: {e}")
-
