@@ -1,27 +1,43 @@
-Segundo Intento de hacer un bot de musica para Discord por Patricio Riquelme (https://github.com/Pato1312) y Pablo Silva (https://github.com/PabloSR99)
+# Bot de Música para Discord 🎶
 
-El bot se encarga buscar canciones en Youtube a travez de enlaces para reproducirlos en el servidor, 
-Tambien funciona con enlaces de Spotify, pero debido a derechos de autor extra la información del Artista
-y Nombre de la Canción para buscarlo en Youtube.
+Este es un bot de música para Discord, desarrollado por **Patricio Riquelme** y **Pablo Silva**. El bot permite reproducir canciones desde **YouTube** y **Spotify** en nuestro servidor de Discord. Además, permite gestionar la lista de reproducción y controlar la reproducción de las canciones.
 
-Todo comando se inicializa con "ms:"
+Todo comando se inicia con el prefijo "**ms:**"
 
-🎵 Lista de Comandos del Bot 🎵
-Aquí tienes todos los comandos disponibles:
-🎥 Comandos de YouTube
-ms:youtube <url> - Reproduce una canción desde YouTube.
-ms:reproducir <url> - Reproduce o añade una canción a la lista.
-ms:saltar - Salta la canción actual.
-ms:detener - Detiene la reproducción.
-ms:pausar - Pausa la canción actual.
-ms:reanudar - Reanuda la canción pausada.
-🎵 Comandos de Spotify
-ms:spotify <url> - Reproduce una canción o playlist desde Spotify.
-⚠️ Nota: Convierte canciones de Spotify a enlaces de YouTube automáticamente.
-🎮 Controles del Bot
-ms:conectar - Conecta el bot al canal de voz.
-ms:desconectar - Desconecta el bot del canal de voz.
-ms:lista - Muestra la lista de reproducción actual.
-ms:limpiar - Elimina todas las canciones de la lista.
-ms:video - Muestra un video de ejemplo (¡broma!).
-Usa los comandos con el prefijo 'ms:' para interactuar conmigo 🎶
+---
+
+## 🎵 Comandos Disponibles
+
+A continuación, te mostramos todos los comandos disponibles para interactuar con el bot. Todos los comandos comienzan con el prefijo `ms:`.
+
+### 🎥 Comandos de YouTube
+
+- `ms:youtube`: Reproduce una canción desde YouTube.
+- `ms:reproducir`: Reproduce o añade una canción a la lista de reproducción.
+- `ms:saltar`: Salta la canción actual.
+- `ms:detener`: Detiene la reproducción de la canción.
+- `ms:pausar`: Pausa la canción actual.
+- `ms:reanudar`: Reanuda la canción que ha sido pausada.
+
+### 🎵 Comandos de Spotify
+
+- `ms:spotify`: Reproduce una canción o lista de reproducción desde Spotify.
+  - **Nota**: Convierte automáticamente canciones de Spotify a enlaces de YouTube.
+
+### 🎮 Controles del Bot
+
+- `ms:conectar`: Conecta el bot al canal de voz.
+- `ms:desconectar`: Desconecta el bot del canal de voz.
+- `ms:lista`: Muestra la lista de reproducción actual.
+- `ms:limpiar`: Elimina todas las canciones de la lista.
+- `ms:video`: Muestra un video de ejemplo (¡broma!).
+
+---
+
+## ⚠️ Notas Importantes
+
+- El bot convierte enlaces de Spotify a YouTube para evitar problemas con los derechos de autor, buscando el nombre de la canción y el artista en YouTube.
+- Asegúrate de tener permisos adecuados para añadir y controlar el bot en tu servidor de Discord.
+
+¡Disfruta de la música en tu servidor de Discord! 🎶
+
