@@ -117,11 +117,10 @@ async def spotify(ctx, url: str):
         if canciones:
             # Procesa cada canción obtenida
             for cancion in canciones:
-                print(cancion)
                 await ctx.send(f"🔍 Buscando **{cancion}** en YouTube...")
                 titulo, enlace = await buscar_youtube(cancion)  # Corrección aquí
                 if enlace:
-                    await reproducir(ctx, bot, enlace)
+                    await reproducir(ctx, bot, enlace, cancion)
                 else:
                     await ctx.send(
                         f"⚠️ No se encontró un resultado válido para **{cancion}**."
@@ -285,7 +284,6 @@ async def ayuda(ctx):
         name="🎥 **Comandos de YouTube**",
         value=(
             "`ms:youtube <url>` - Reproduce una canción desde YouTube.\n"
-            "`ms:reproducir <url>` - Reproduce o añade una canción a la lista.\n"
             "`ms:saltar` - Salta la canción actual.\n"
             "`ms:detener` - Detiene la reproducción.\n"
             "`ms:pausar` - Pausa la canción actual.\n"

@@ -6,7 +6,7 @@ import discord
 playlist = deque()  # Cola global para la lista de reproducción
 
 
-async def reproducir(ctx, bot, url):
+async def reproducir(ctx, bot, url, track_name=None):
     global playlist
     canal = ctx.message.author.voice.channel
     if not canal:
@@ -22,8 +22,14 @@ async def reproducir(ctx, bot, url):
         info = ydl.extract_info(url, download=False)
         titulo = info["title"]
 
-    playlist.append((titulo, url))
-    await ctx.send(f"🎶 Se añadió **{titulo}** a la lista.")
+    if track_name != None:
+        print(track_name)
+        playlist.append((track_name, url))
+        await ctx.send(f"🎶 Se añadió **{track_name}** a la lista.")
+    else:
+        print(f"{titulo}")
+        playlist.append((titulo, url))
+        await ctx.send(f"🎶 Se añadió **{titulo}** a la lista.")
 
     if not voz.is_playing():
         await reproducir_siguiente(ctx, voz)
@@ -77,3 +83,6 @@ async def reproducir_siguiente(ctx, voz):
         # await ctx.send(url)
     else:
         await ctx.send("La lista de reproducción ha terminado.")
+
+
+# ---------------------------------------------------------------------------------------------
