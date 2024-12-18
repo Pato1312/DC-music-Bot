@@ -1,8 +1,14 @@
+# TO DO : 
+  - Hacer que nombre de canciones en spotify no aparescan con título **videoplayback**
+  - Revisar maejoras de controles
+  - Cambiar mensajes en discord a formato codigo
+  - Mostrar video fuente
+---
 # Bot de Música para Discord 🎶
 
-Este es un bot de música para Discord, desarrollado por **Patricio Riquelme** y **Pablo Silva**. El bot permite reproducir canciones desde **YouTube** y **Spotify** en nuestro servidor de Discord. Además, permite gestionar la lista de reproducción y controlar la reproducción de las canciones.
+Este es un bot de música para Discord, desarrollado por **Patricio Riquelme** (https://github.com/Pato1312) y **Pablo Silva** (https://github.com/PabloSR99). El bot permite reproducir canciones desde **YouTube** y **Spotify** en nuestro servidor de Discord. Además, permite gestionar la lista de reproducción y controlar la reproducción de las canciones.
 
-Todo comando se inicia con el prefijo ** "ms:" **
+Todo comando se inicia con el prefijo **ms:**
 
 ---
 
