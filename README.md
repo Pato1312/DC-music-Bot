@@ -1,7 +1,6 @@
 # TO DO : 
-  - Hacer que nombre de canciones en spotify no aparescan con título **videoplayback**
   - Revisar maejoras de controles
-  - Cambiar mensajes en discord a formato codigo
+  - Cambiar mensajes en discord a embed
   - Mostrar video fuente
 ---
 # Bot de Música para Discord 🎶
