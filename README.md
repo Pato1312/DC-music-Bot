@@ -1,7 +1,9 @@
 # TO DO : 
+  - ARREGLAR FUNCION BUSCAR EN YOUTUBE
   - Revisar maejoras de controles
   - Cambiar mensajes en discord a embed
-  - Mostrar video fuente
+  - Mostrar video fuente *QUIZAS
+  - Hostear en Google Cloud
 ---
 # Bot de Música para Discord 🎶
 
