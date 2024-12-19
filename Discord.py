@@ -1,20 +1,24 @@
 import discord
+from collections import deque
+
 from discord.ext import commands
 from discord.utils import get
-from Youtube import reproducir, buscar_youtube
-from Spotify import obtener_informacion_spotify
-import Controls
 import yt_dlp as youtube_dl
-from collections import deque
-import credenciales
 
+import Controls
+import credenciales
+from Spotify import obtener_informacion_spotify
+from Youtube import reproducir, buscar_youtube
 
 intents = discord.Intents.default()
 intents.message_content = True
 
-
 bot = commands.Bot(command_prefix="ms:", intents=intents)
 playlist = deque()
+
+
+intents = discord.Intents.default()
+intents.message_content = True
 
 
 # -------------------------- LLAMAR AL BOT AL SERVIDOR ------------------------- #
@@ -69,7 +73,12 @@ async def desconectar(ctx):
 
 @bot.command()
 async def video(ctx):
-    await ctx.send("https://www.youtube.com/watch?v=9-80NMLhmxs")
+    embed = discord.Embed(
+        title="Video",
+        description="https://www.youtube.com/watch?v=9-80NMLhmxs",
+        color=discord.Color.blue(),
+    )
+    await ctx.send(embed=embed)
 
 
 @bot.command()
@@ -78,9 +87,12 @@ async def youtube(ctx, url: str):
     try:
         # Verificamos que el usuario este conectado a un canal de voz
         if not ctx.author.voice or not ctx.author.voice.channel:
-            await ctx.send(
-                "❌ Debes estar conectado a un canal de voz para usar este comando."
+            embed = discord.Embed(
+                title="Error",
+                description="❌ Debes estar conectado a un canal de voz para usar este comando.",
+                color=discord.Color.red(),
             )
+            await ctx.send(embed=embed)
             return
         else:
             # Si esta conectado el usuario, llama a la función en youtube.py
@@ -89,14 +101,20 @@ async def youtube(ctx, url: str):
 
     except youtube_dl.utils.DownloadError:
         # No se encontro canción en youtube
-        await ctx.send(
-            "❌ No se pudo procesar la URL. Asegúrate de que sea válida y de YouTube."
+        embed = discord.Embed(
+            title="Error",
+            description="❌ No se pudo procesar la URL. Asegúrate de que sea válida y de YouTube.",
+            color=discord.Color.red(),
         )
+        await ctx.send(embed=embed)
 
     except Exception as e:
-        await ctx.send(
-            "❌ Ocurrió un error al intentar reproducir la canción desde YouTube."
+        embed = discord.Embed(
+            title="Error",
+            description="❌ Ocurrió un error al intentar reproducir la canción desde YouTube.",
+            color=discord.Color.red(),
         )
+        await ctx.send(embed=embed)
         print(f"Error en youtube command: {e}")
 
 
