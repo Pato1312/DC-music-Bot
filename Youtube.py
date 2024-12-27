@@ -2,6 +2,11 @@ from discord.utils import get
 from collections import deque
 import yt_dlp as youtube_dl
 import discord
+import credenciales
+from googleapiclient.discovery import build
+
+YOUTUBE_API_KEY = credenciales.YOUTUBE_API_KEY
+
 
 playlist = deque()  # Cola global para la lista de reproducción
 
@@ -55,6 +60,19 @@ async def buscar_youtube(query):
         except Exception as e:
             print(f"Error buscando en YouTube: {e}")
             return None, None
+
+
+async def buscar_query(query):
+    youtube = build("youtube", "v3", developerKey=YOUTUBE_API_KEY)
+    request = youtube.search().list(part="snippet", maxResults=1, q=query, type="video")
+    response = request.execute()
+    if response["items"]:
+        video_id = response["items"][0]["id"]["videoId"]
+        titulo = response["items"][0]["snippet"]["title"]
+        url = f"https://www.youtube.com/watch?v={video_id}"
+        return titulo, url
+    else:
+        return None, None
 
 
 async def reproducir_siguiente(ctx, voz):

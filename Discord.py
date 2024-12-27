@@ -8,7 +8,8 @@ import yt_dlp as youtube_dl
 import Controls
 import credenciales
 from Spotify import obtener_informacion_spotify
-from Youtube import reproducir, buscar_youtube
+from Youtube import reproducir, buscar_youtube, buscar_query
+
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -29,7 +30,7 @@ async def on_ready():
         print(f"- {command.name}")
     await bot.change_presence(
         status=discord.Status.online,
-        activity=discord.Game(name="¡Reproduciendo música!"),
+        activity=discord.Game(name="`¡Reproduciendo música!`"),
     )
 
 
@@ -74,7 +75,7 @@ async def desconectar(ctx):
 @bot.command()
 async def video(ctx):
     embed = discord.Embed(
-        title="Video",
+        title="`Video 📽️`",
         description="https://www.youtube.com/watch?v=9-80NMLhmxs",
         color=discord.Color.blue(),
     )
@@ -82,8 +83,7 @@ async def video(ctx):
 
 
 @bot.command()
-async def youtube(ctx, url: str):
-
+async def youtube(ctx, url: str = None, *query):
     try:
         # Verificamos que el usuario este conectado a un canal de voz
         if not ctx.author.voice or not ctx.author.voice.channel:
@@ -96,9 +96,25 @@ async def youtube(ctx, url: str):
             return
         else:
             # Si esta conectado el usuario, llama a la función en youtube.py
-            await reproducir(ctx, bot, url)
-    # Errores al reproducir el video
+            if query:
+                titulo, url = await buscar_query(query)
+                if url:
+                    await reproducir(ctx, bot, url, titulo)
+                else:
+                    await ctx.send(
+                        "⚠️ No se encontró un resultado válido para la búsqueda."
+                    )
+            elif url:
+                await reproducir(ctx, bot, url)
+            else:
+                embed = discord.Embed(
+                    title="Error",
+                    description="❌ Debes proporcionar una URL o una consulta de búsqueda.",
+                    color=discord.Color.red(),
+                )
+                await ctx.send(embed=embed)
 
+    # Errores al reproducir el video
     except youtube_dl.utils.DownloadError:
         # No se encontro canción en youtube
         embed = discord.Embed(
