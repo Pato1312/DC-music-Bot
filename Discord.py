@@ -236,32 +236,44 @@ async def limpiar(ctx):  # Comando para limpiar la lista de reproducción
 
 
 @bot.command()
-async def eliminar(ctx, posicion: int):
+async def eliminar(ctx, posicion: int):  # Comando para eliminar una canción de la lista
     try:
-        if not ctx.author.voice or not ctx.author.voice.channel:
+        if (
+            not ctx.author.voice or not ctx.author.voice.channel
+        ):  # Verifica si el usuario está conectado a un canal de voz
             await ctx.send(
                 "❌ Debes estar conectado a un canal de voz para usar este comando."
             )
             return
         else:
-            await Controls.eliminar(ctx, posicion)
+            await Controls.eliminar(
+                ctx, posicion
+            )  # Llama a la función en Controls.py para eliminar una canción de la lista
     except ValueError:
-        await ctx.send("⚠️ La posición debe ser un número válido.")
+        await ctx.send(
+            "⚠️ La posición debe ser un número válido."
+        )  # Error si la posición no es un número válido
     except Exception as e:
-        await ctx.send("❌ Error al eliminar la canción.")
+        await ctx.send("❌ Error al eliminar la canción.")  # Error general
         print(f"Error en eliminar command: {e}")
 
 
 @bot.command()
-async def mover(ctx, posicion_actual: int, nueva_posicion: int):
+async def mover(
+    ctx, posicion_actual: int, nueva_posicion: int
+):  # Comando para mover una canción de la lista a otra posición
     try:
-        if not ctx.author.voice or not ctx.author.voice.channel:
+        if (
+            not ctx.author.voice or not ctx.author.voice.channel
+        ):  # Verifica si el usuario está conectado a un canal de voz
             await ctx.send(
                 "❌ Debes estar conectado a un canal de voz para usar este comando."
             )
             return
         else:
-            await Controls.mover(ctx, posicion_actual, nueva_posicion)
+            await Controls.mover(
+                ctx, posicion_actual, nueva_posicion
+            )  # Llama a la función en Controls.py para mover una canción de la lista
     except ValueError:
         await ctx.send("⚠️ Las posiciones deben ser números válidos.")
     except Exception as e:
@@ -271,23 +283,27 @@ async def mover(ctx, posicion_actual: int, nueva_posicion: int):
 
 # -------------------------- CONTROLES DE REPRODUCCIÓN --------------------------
 @bot.command()
-async def pausar(ctx):
+async def pausar(ctx):  # Comando para pausar la reproducción
     try:
         voz = discord.utils.get(bot.voice_clients, guild=ctx.guild)
-        if not ctx.author.voice or not ctx.author.voice.channel:
+        if (
+            not ctx.author.voice or not ctx.author.voice.channel
+        ):  # Verifica si el usuario está conectado a un canal de voz
             await ctx.send(
                 "❌ Debes estar conectado a un canal de voz para usar este comando."
             )
             return
         else:
-            await Controls.pausar(ctx, voz)
+            await Controls.pausar(
+                ctx, voz
+            )  # Llama a la función en Controls.py para pausar la reproducción
     except Exception as e:
         await ctx.send("❌ Error al pausar la reproducción.")
         print(f"Error en pausar command: {e}")
 
 
 @bot.command()
-async def reanudar(ctx):
+async def reanudar(ctx):  # Comando para reanudar la reproducción
     try:
         voz = discord.utils.get(bot.voice_clients, guild=ctx.guild)
         if not ctx.author.voice or not ctx.author.voice.channel:
@@ -303,16 +319,20 @@ async def reanudar(ctx):
 
 
 @bot.command()
-async def saltar(ctx):
+async def saltar(ctx):  # Comando para saltar la canción actual
     try:
         voz = discord.utils.get(bot.voice_clients, guild=ctx.guild)
-        if not ctx.author.voice or not ctx.author.voice.channel:
+        if (
+            not ctx.author.voice or not ctx.author.voice.channel
+        ):  # Verifica si el usuario está conectado a un canal de voz
             await ctx.send(
                 "❌ Debes estar conectado a un canal de voz para usar este comando."
             )
             return
         else:
-            await Controls.saltar(ctx, voz)
+            await Controls.saltar(
+                ctx, voz
+            )  # Llama a la función en Controls.py para saltar la canción actual
     except Exception as e:
         await ctx.send("❌ Error al saltar la canción.")
         print(f"Error en saltar command: {e}")
@@ -323,16 +343,20 @@ async def saltar(ctx):
 
 @bot.event
 async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandNotFound):
+    if isinstance(
+        error, commands.CommandNotFound
+    ):  # Comando no encontrado, muestra mensaje de para obtener ayuda
         await ctx.send(
-            "⚠️ Comando no encontrado. Usa `ms:` para ver los comandos disponibles."
+            "⚠️ Comando no encontrado. Usa `ms:ayuda` para ver los comandos disponibles."
         )
-    elif isinstance(error, commands.MissingRequiredArgument):
+    elif isinstance(
+        error, commands.MissingRequiredArgument
+    ):  # Faltan argumentos en el comando
         await ctx.send("⚠️ Faltan argumentos en el comando. Revisa la sintaxis.")
-    elif isinstance(error, commands.BadArgument):
+    elif isinstance(error, commands.BadArgument):  # Argumento inválido
         await ctx.send("⚠️ Argumento inválido. Asegúrate de usar el formato correcto.")
     else:
-        await ctx.send("❌ Ha ocurrido un error inesperado.")
+        await ctx.send("❌ Ha ocurrido un error inesperado.")  # Error inesperado
         print(f"Error no manejado: {error}")
 
 
@@ -355,10 +379,7 @@ async def ayuda(ctx):
         name="🎥 **Comandos de YouTube**",
         value=(
             "`ms:youtube <url>` - Reproduce una canción desde YouTube.\n"
-            "`ms:saltar` - Salta la canción actual.\n"
-            "`ms:detener` - Detiene la reproducción.\n"
-            "`ms:pausar` - Pausa la canción actual.\n"
-            "`ms:reanudar` - Reanuda la canción pausada."
+            "`ms:youtube <búsqueda>` - Busca y reproduce una canción desde YouTube.\n"
         ),
         inline=False,
     )
@@ -368,9 +389,20 @@ async def ayuda(ctx):
         name="🎵 **Comandos de Spotify**",
         value=(
             "`ms:spotify <url>` - Reproduce una canción o playlist desde Spotify.\n"
-            "⚠️ *Nota*: Convierte canciones de Spotify a enlaces de YouTube automáticamente."
+            "⚠️ *Nota*: Convierte canciones de Spotify a enlaces de YouTube automáticamente.\n"
         ),
         inline=False,
+    )
+
+    # Sección de controles de la lista de reproducción
+    embed.add_field(
+        name="🎶 **Controles de la Lista de Reproducción**",
+        value=(
+            "`ms:saltar` - Salta la canción actual.\n"
+            "`ms:detener` - Detiene la reproducción.\n"
+            "`ms:pausar` - Pausa la canción actual.\n"
+            "`ms:reanudar` - Reanuda la canción pausada.\n"
+        ),
     )
 
     # Sección de controles del bot
@@ -386,14 +418,14 @@ async def ayuda(ctx):
         inline=False,
     )
 
-    # Mensaje final
-    embed.set_footer(
-        text="Usa los comandos con el prefijo 'ms:' para interactuar conmigo 🎶"
-    )
+    # Sección de comando del bot
+    embed.set_footer(text="Usa los comandos con el prefijo 'ms:' para comenzar 🎶")
+
     await ctx.send(embed=embed)
 
 
 # -------------------------- EJECUCIÓN DEL BOT --------------------------
+# Iniciar el bot con las credenciales cargadas
 try:
     bot.run(credenciales.DISCORD_BOT_TOKEN)
 except Exception as e:
