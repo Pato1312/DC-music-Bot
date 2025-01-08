@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # TO DO :
 
 - Revisar manejo de errores
@@ -7,15 +6,7 @@
 - Hostear en Google Cloud o otro servicio
 - Soporte youtube music
 
-=======
-# TO DO : 
-  - Revisar mejoras de controles
-  - Cambiar mensajes en discord a embed
-  - Mostrar video fuente *QUIZAS
-  - Hostear en Google Cloud o otro servicio
-  - Soporte youtube music
->>>>>>> 836c513d0ad0cf35c21881c123364529a9891369
----
+
 
 # Bot de Música para Discord 🎶
 
