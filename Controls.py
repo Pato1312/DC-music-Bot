@@ -1,7 +1,7 @@
 from Youtube import playlist
 
 
-async def lista(ctx):
+async def lista(ctx):  # Funcion para mostrar la lista de reproduccion
     global playlist
     if playlist:
         mensaje = "🎵 **Lista de reproducción:**\n"
@@ -13,7 +13,7 @@ async def lista(ctx):
     await ctx.send(mensaje)
 
 
-async def pausar(ctx, voz):
+async def pausar(ctx, voz):  # Funcion para pausar la reproduccion
     if voz and voz.is_playing():
         voz.pause()
         await ctx.send("⏸️ Reproducción pausada.")
@@ -21,7 +21,7 @@ async def pausar(ctx, voz):
         await ctx.send("⚠️ No hay música reproduciéndose.")
 
 
-async def reanudar(ctx, voz):
+async def reanudar(ctx, voz):  # Funcion para reanudar la reproduccion
     if voz and voz.is_paused():
         voz.resume()
         await ctx.send("▶️ Reproducción reanudada.")
@@ -29,7 +29,7 @@ async def reanudar(ctx, voz):
         await ctx.send("⚠️ No hay música pausada.")
 
 
-async def saltar(ctx, voz):
+async def saltar(ctx, voz):  # Funcion para saltar la cancion actual
     if voz and voz.is_playing():
         voz.stop()
         await ctx.send("⏭️ Canción saltada.")
@@ -37,12 +37,14 @@ async def saltar(ctx, voz):
         await ctx.send("⚠️ No hay música reproduciéndose.")
 
 
-async def limpiar(ctx):
+async def limpiar(ctx):  # Funcion para limpiar la lista de reproduccion
     playlist.clear()
     await ctx.send("🗑️ Lista de reproducción vaciada.")
 
 
-async def mover(ctx, posicion_actual: int, nueva_posicion: int):
+async def mover(
+    ctx, posicion_actual: int, nueva_posicion: int
+):  # Funcion para mover una cancion de la lista de reproduccion a otra posicion
     if 1 <= posicion_actual <= len(playlist) and 1 <= nueva_posicion <= len(playlist):
         cancion = playlist[posicion_actual - 1]
         playlist.remove(cancion)
@@ -54,7 +56,9 @@ async def mover(ctx, posicion_actual: int, nueva_posicion: int):
         await ctx.send("⚠️ Posiciones inválidas.")
 
 
-async def eliminar(ctx, posicion: int):
+async def eliminar(
+    ctx, posicion: int
+):  # Funcion para eliminar una cancion de la lista de reproduccion
     global playlist  # Asegúrate de que 'playlist' es la lista global
     try:
         # Verifica si la lista de reproducción está vacía

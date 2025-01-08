@@ -398,10 +398,13 @@ async def ayuda(ctx):
     embed.add_field(
         name="🎶 **Controles de la Lista de Reproducción**",
         value=(
+            "`ms:lista` - Muestra la lista de reproducción actual.\n"
+            "`ms:limpiar` - Elimina todas las canciones de la lista.\n"
             "`ms:saltar` - Salta la canción actual.\n"
-            "`ms:detener` - Detiene la reproducción.\n"
             "`ms:pausar` - Pausa la canción actual.\n"
             "`ms:reanudar` - Reanuda la canción pausada.\n"
+            "`ms:mover <posición_actual> <nueva_posición>` - Mueve una canción a otra posición en la lista (⚠️se recomienda usar ms:lista antes).\n"
+            "`ms:eliminar <posición>` - Elimina una canción de la lista.\n"
         ),
     )
 
@@ -411,8 +414,6 @@ async def ayuda(ctx):
         value=(
             "`ms:conectar` - Conecta el bot al canal de voz.\n"
             "`ms:desconectar` - Desconecta el bot del canal de voz.\n"
-            "`ms:lista` - Muestra la lista de reproducción actual.\n"
-            "`ms:limpiar` - Elimina todas las canciones de la lista.\n"
             "`ms:video` - Muestra un video de ejemplo (¡broma!)."
         ),
         inline=False,
