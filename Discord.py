@@ -23,38 +23,53 @@ intents.message_content = True
 
 
 # -------------------------- LLAMAR AL BOT AL SERVIDOR ------------------------- #
+
+
+# Inicialización del bot
 @bot.event
 async def on_ready():
-    print(f"✅ Bot listo y conectado como {bot.user}")
-    for command in bot.commands:
+    print(f"✅ Bot listo y conectado como {bot.user}")  # Mensaje de confirmación
+    for command in bot.commands:  # Lista de comandos disponibles por consola
         print(f"- {command.name}")
-    await bot.change_presence(
+    await bot.change_presence(  # Estado del bot
         status=discord.Status.online,
-        activity=discord.Game(name="`¡Reproduciendo música!`"),
+        activity=discord.Game(name="`¡Reproduciendo música! 🎶`"),
     )
 
 
+# Conección del bot al canal de voz
 @bot.command()
 async def conectar(ctx):
-    global playlist
+    global playlist  # Lista de reproducción global
 
-    canal = ctx.message.author.voice.channel
+    canal = ctx.message.author.voice.channel  # Canal de voz del usuario
 
-    if not canal:
-        await ctx.send("❌ No estás conectado a un canal de voz.")
+    if not canal:  # Verificación de conexión al canal de voz
+        embed = discord.Embed(
+            title="Error",
+            description="❌ No estás conectado a un canal de voz.",
+            color=discord.Color.red(),
+        )
+        await ctx.send(embed=embed)
         return
 
-    voz = get(bot.voice_clients, guild=ctx.guild)
+    voz = get(bot.voice_clients, guild=ctx.guild)  # Conexión del bot al canal de voz
 
-    if voz and voz.is_connected():
+    if voz and voz.is_connected():  # Verificación de conexión del bot al canal de voz
         await voz.move_to(canal)
     else:
         voz = await canal.connect()
 
-    playlist.clear()
-    await ctx.send("🎶 Conectado al canal y lista de reproducción inicializada.")
+    playlist.clear()  # Limpieza de la lista de reproducción
+    embed = discord.Embed(
+        title="Conectado",
+        description="🎶 Conectado al canal y lista de reproducción inicializada.",
+        color=discord.Color.green(),
+    )
+    await ctx.send(embed=embed)  # Mensaje de estado de conexión
 
 
+# Desconexión del bot al canal de voz
 @bot.command()
 async def desconectar(ctx):
     """
@@ -62,18 +77,30 @@ async def desconectar(ctx):
     """
     voz = discord.utils.get(bot.voice_clients, guild=ctx.guild)
 
-    if voz and voz.is_connected():
+    if (
+        voz and voz.is_connected()
+    ):  # Verifica si el bot está conectado a un canal de voz
+        embed = discord.Embed(
+            title="Desconectando... 🎶",
+            description="🎶 El bot se ha desconectado del canal de voz.",
+            color=discord.Color.green(),
+        )
         await voz.disconnect()  # Desconecta al bot del canal de voz
-        await ctx.send("🎶 El bot se ha desconectado del canal de voz.")
     else:
-        await ctx.send("⚠️ El bot no está conectado a un canal de voz.")
+        embed = discord.Embed(
+            title="Error",
+            description="⚠️ El bot no está conectado a un canal de voz.",
+            color=discord.Color.red(),
+        )
+
+    await ctx.send(embed=embed)
 
 
 # -------------------------- YOUTUBE -------------------------- #
 
 
 @bot.command()
-async def video(ctx):
+async def video(ctx):  # Comando de broma para mostrar un video de ejemplo
     embed = discord.Embed(
         title="`Video 📽️`",
         description="https://www.youtube.com/watch?v=9-80NMLhmxs",
@@ -83,7 +110,9 @@ async def video(ctx):
 
 
 @bot.command()
-async def youtube(ctx, url: str = None, *query):
+async def youtube(
+    ctx, url: str = None, *query
+):  # Comando para reproducir canciones desde YouTube
     try:
         # Verificamos que el usuario este conectado a un canal de voz
         if not ctx.author.voice or not ctx.author.voice.channel:
@@ -96,17 +125,17 @@ async def youtube(ctx, url: str = None, *query):
             return
         else:
             # Si esta conectado el usuario, llama a la función en youtube.py
-            if query:
+            if query:  # Si se proporciona un termino de búsqueda
                 titulo, url = await buscar_query(query)
-                if url:
+                if url:  # Si se encuentra un resultado válido
                     await reproducir(ctx, bot, url, titulo)
-                else:
+                else:  # Si no se encuentra un resultado válido
                     await ctx.send(
                         "⚠️ No se encontró un resultado válido para la búsqueda."
                     )
-            elif url:
+            elif url:  # Si se proporciona una URL
                 await reproducir(ctx, bot, url)
-            else:
+            else:  # Si no se proporciona una URL o una consulta de búsqueda
                 embed = discord.Embed(
                     title="Error",
                     description="❌ Debes proporcionar una URL o una consulta de búsqueda.",
@@ -124,7 +153,7 @@ async def youtube(ctx, url: str = None, *query):
         )
         await ctx.send(embed=embed)
 
-    except Exception as e:
+    except Exception as e:  # Error general
         embed = discord.Embed(
             title="Error",
             description="❌ Ocurrió un error al intentar reproducir la canción desde YouTube.",
@@ -136,7 +165,7 @@ async def youtube(ctx, url: str = None, *query):
 
 # -------------------------- SPOTIFY -------------------------- #
 @bot.command()
-async def spotify(ctx, url: str):
+async def spotify(ctx, url: str):  # Comando para reproducir canciones desde Spotify
     try:
         # Obtiene información de canciones desde el enlace de Spotify
         canciones = obtener_informacion_spotify(url)
@@ -162,7 +191,7 @@ async def spotify(ctx, url: str):
         else:
             await ctx.send("⚠️ No se encontró información válida en Spotify.")
 
-    except Exception as e:
+    except Exception as e:  # Error general
         await ctx.send("❌ Error al procesar el enlace de Spotify.")
         print(f"Error en spotify command: {e}")
 
@@ -171,24 +200,30 @@ async def spotify(ctx, url: str):
 
 
 @bot.command()
-async def lista(ctx):
+async def lista(ctx):  # Comando para mostrar la lista de reproducción
     try:
-        if not ctx.author.voice or not ctx.author.voice.channel:
+        if (
+            not ctx.author.voice or not ctx.author.voice.channel
+        ):  # Verifica si el usuario está conectado a un canal de voz
             await ctx.send(
                 "❌ Debes estar conectado a un canal de voz para usar este comando."
             )
             return
         else:
-            await Controls.lista(ctx)
-    except Exception as e:
+            await Controls.lista(
+                ctx
+            )  # Llama a la función en Controls.py para mostrar la lista de reproducción
+    except Exception as e:  # Error general
         await ctx.send("❌ Error al mostrar la lista de reproducción.")
         print(f"Error en lista command: {e}")
 
 
 @bot.command()
-async def limpiar(ctx):
+async def limpiar(ctx):  # Comando para limpiar la lista de reproducción
     try:
-        if not ctx.author.voice or not ctx.author.voice.channel:
+        if (
+            not ctx.author.voice or not ctx.author.voice.channel
+        ):  # Verifica si el usuario está conectado a un canal de voz
             await ctx.send(
                 "❌ Debes estar conectado a un canal de voz para usar este comando."
             )
@@ -284,6 +319,8 @@ async def saltar(ctx):
 
 
 # -------------------------- MANEJO DE ERRORES GENERALES --------------------------
+
+
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.CommandNotFound):
