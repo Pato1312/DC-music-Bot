@@ -172,9 +172,12 @@ async def spotify(ctx, url: str):  # Comando para reproducir canciones desde Spo
 
         # Verifica si el usuario está conectado a un canal de voz
         if not ctx.author.voice or not ctx.author.voice.channel:
-            await ctx.send(
-                "❌ Debes estar conectado a un canal de voz para usar este comando."
+            embed = discord.Embed(
+                title="Error",
+                description="❌ Debes estar conectado a un canal de voz para usar este comando.",
+                color=discord.Color.red(),
             )
+            await ctx.send(embed=embed)
             return
 
         if canciones:
