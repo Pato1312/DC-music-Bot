@@ -11,16 +11,11 @@ from Spotify import obtener_informacion_spotify
 from Youtube import reproducir, buscar_youtube, buscar_query
 
 
-intents = discord.Intents.default()
-intents.message_content = True
+intents = discord.Intents.default()  # Intenciones del bot
+intents.message_content = True  # Habilitar la intención de contenido de mensajes
 
-bot = commands.Bot(command_prefix="ms:", intents=intents)
-playlist = deque()
-
-
-intents = discord.Intents.default()
-intents.message_content = True
-
+bot = commands.Bot(command_prefix="ms:", intents=intents)  # Prefijo de los comandos
+playlist = deque()  # Lista de reproducción global
 
 # -------------------------- LLAMAR AL BOT AL SERVIDOR ------------------------- #
 

@@ -1,10 +1,13 @@
-# TO DO : 
-  - Revisar maejoras de controles
-  - Cambiar mensajes en discord a embed
-  - Mostrar video fuente *QUIZAS
-  - Hostear en Google Cloud o otro servicio
-  - Soporte youtube music
+# TO DO :
+
+- Revisar manejo de errores
+- Cambiar mensajes en discord a embed
+- Mostrar video fuente \*QUIZAS
+- Hostear en Google Cloud o otro servicio
+- Soporte youtube music
+
 ---
+
 # Bot de Música para Discord 🎶
 
 Este es un bot de música para Discord, desarrollado por **Patricio Riquelme** (https://github.com/Pato1312) y **Pablo Silva** (https://github.com/PabloSR99). El bot permite reproducir canciones desde **YouTube** y **Spotify** en nuestro servidor de Discord. Además, permite gestionar la lista de reproducción y controlar la reproducción de las canciones.
