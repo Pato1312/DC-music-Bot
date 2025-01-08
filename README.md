@@ -1,5 +1,5 @@
 # TO DO : 
-  - Revisar maejoras de controles
+  - Revisar mejoras de controles
   - Cambiar mensajes en discord a embed
   - Mostrar video fuente *QUIZAS
   - Hostear en Google Cloud o otro servicio
